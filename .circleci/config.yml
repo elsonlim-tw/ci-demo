@@ -1,0 +1,13 @@
+version: 2.1
+jobs:
+  test:
+    docker:
+      - image: node:12.16
+    steps:
+      - run:
+          name: "say hello"
+          command: echo "hello"
+workflows:
+  build-and-test:
+    jobs:
+      - test
