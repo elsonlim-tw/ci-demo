@@ -16,6 +16,9 @@ jobs:
           paths:
             - vendor/bundle
       - run:
+          name: "echo env"
+          command: echo ${ myvar }
+      - run:
           name: "test"
           command: npm run test:coverage
 workflows:
