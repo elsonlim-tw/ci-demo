@@ -4,12 +4,13 @@ jobs:
     docker:
       - image: node:12.16
     steps:
+      - checkout
       - run:
-          name: "say hello"
-          command: echo "hello"
+          name: "install"
+          command: "npm install"
       - run:
-          name: "say bye"
-          command: echo "bye"
+          name: "test"
+          command: npm run test:coverage
 workflows:
   build-and-test:
     jobs:
