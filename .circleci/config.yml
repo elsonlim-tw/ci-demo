@@ -6,21 +6,25 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys:
-            - demo-app-{{ checksum "package-lock.json" }}
+          key: demo-app-{{ checksum "package-lock.json" }}
       - run:
           name: "install"
           command: npm install
       - save_cache:
           key: demo-app-{{ checksum "package-lock.json" }}
           paths:
-            - vendor/bundle
-      - run:
-          name: "echo env"
-          command: echo $myvar
+            - ./node_modules
       - run:
           name: "test"
           command: npm run test:coverage
+  deploy:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: "deploy to heroku"
+          command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 workflows:
   build-and-test:
     jobs:
