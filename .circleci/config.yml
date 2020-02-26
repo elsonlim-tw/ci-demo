@@ -1,13 +1,17 @@
 version: 2.1
+orbs:
+  node: circleci/node@1.1.6
 jobs:
-  test:
-    docker:
-      - image: node:12.16
-    steps:
-      - run:
-          name: "say hello"
-          command: echo "hello"
-workflows:
   build-and-test:
-    jobs:
-      - test
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: npm install
+            - run: npm test
+workflows:
+    build-and-test:
+      jobs:
+        - build-and-test
