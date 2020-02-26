@@ -2,12 +2,19 @@ version: 2.1
 jobs:
   test:
     docker:
-      - image: node:12.16
+      - image: circleci/node:12.16
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - demo-app-{{ checksum "package-lock.json" }}
       - run:
           name: "install"
-          command: "npm install"
+          command: npm install
+      - save_cache:
+          key: demo-app-{{ checksum "package-lock.json" }}
+          paths:
+            - vendor/bundle
       - run:
           name: "test"
           command: npm run test:coverage
